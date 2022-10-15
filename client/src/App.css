@@ -78,6 +78,7 @@ body {
   color: black;
   cursor: pointer;
   opacity: 100%;
+  display: flex;
 }
 
 .playlister-button:hover {
@@ -101,10 +102,27 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 36pt;
+  display: flex;
 }
 
 #add-list-button {
   float:left;
+}
+
+#add-song-button{
+  font-size:47.4pt;
+  float: left;
+}
+
+#close-button{
+  font-size:47.4pt;
+  float: right;
+}
+
+#playlist-selector-heading{
+  align-items: center;
+  font-size: x-large;
+  display: flex;
 }
 
 .list-card, .selected-list-card, .unselected-list-card {
@@ -138,7 +156,7 @@ body {
 
 .list-card-button {
   float:right;
-  font-size:18pt;
+  font-size:21pt;
 }
 
 input {
