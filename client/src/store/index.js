@@ -18,6 +18,7 @@ export const GlobalStoreActionType = {
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
+
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -137,6 +138,39 @@ export const useGlobalStore = () => {
             }
         } asyncCreatePlaylist();
     }
+
+    // delete list stuff
+
+    store.markListForDeletion = function (id) {
+        storeReducer({
+            type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
+            payload: id
+        });
+        store.showDeleteListModal();
+    }
+    store.deleteList = function (id) {
+        async function processDelete(id) {
+            let response = await api.deleteListById(id);
+            if (response.data.success) {
+                store.loadIdNamePairs();
+                store.history.push("/");
+            }
+        }
+        processDelete(id);
+    }
+    store.deleteMarkedList = function() {
+        store.deleteList(store.listMarkedForDeletion);
+        store.hideDeleteListModal();
+    }
+    store.showDeleteListModal = function() {
+        let modal = document.getElementById("delete-modal");
+        modal.classList.add("is-visible");
+    }
+    store.hideDeleteListModal = function() {
+        let modal = document.getElementById("delete-modal");
+        modal.classList.remove("is-visible");
+    }
+
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
     store.changeListName = function (id, newName) {
