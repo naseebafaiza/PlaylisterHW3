@@ -113,8 +113,9 @@ export const useGlobalStore = () => {
     // This function processes adding a new list
 
     store.createNewList = function(){
-        async function asyncCreateNewList(){
-            let response = await api.addNewList();
+        async function asyncCreatePlaylist(){
+            console.log("In asyn create new list function");
+            let response = await api.createNewList();
             if (response.data.success){
                 let playlistId = response.data.playlist._id; // param for setting here
                 async function asyncSetCurrentList(id){ // line 200
@@ -131,7 +132,10 @@ export const useGlobalStore = () => {
                     } 
                 } asyncSetCurrentList(playlistId);
             }
-        } asyncCreateNewList();
+            else {
+                console.log("API FAILED TO CREATE A NEW LIST");
+            }
+        } asyncCreatePlaylist();
     }
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
