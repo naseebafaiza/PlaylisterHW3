@@ -15,12 +15,23 @@ function ListCard(props) {
     store.history = useHistory();
     const { idNamePair, selected } = props;
 
+
+    // handle delete list here link to modal
+    function handleDeleteList(event) {
+        event.stopPropagation();
+        store.markListForDeletion(idNamePair)
+        store.showDeleteListModal();
+        //store.deleteList(props.idNamePair._id);
+    }
+
     function handleLoadList(event) {
         if (!event.target.disabled) {
             let _id = event.target.id;
             if (_id.indexOf('list-card-text-') >= 0)
                 _id = ("" + _id).substring("list-card-text-".length);
-
+            else if(_id.indexOf('delete-list-')>=0){
+                _id = ("" + _id).substring("delete-list-".length);
+            }
             // CHANGE THE CURRENT LIST
             store.setCurrentList(_id);
         }
@@ -76,6 +87,7 @@ function ListCard(props) {
                 id={"delete-list-" + idNamePair._id}
                 className="list-card-button"
                 value={"\u2715"}
+                onClick ={handleDeleteList}
             />
             <input
                 disabled={cardStatus}
