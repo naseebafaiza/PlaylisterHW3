@@ -186,7 +186,6 @@ export const useGlobalStore = () => {
         modal.classList.remove("is-visible");
     }
 
-
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
     store.changeListName = function (id, newName) {
         // GET THE LIST
@@ -196,7 +195,7 @@ export const useGlobalStore = () => {
                 let playlist = response.data.playist;
                 playlist.name = newName;
                 async function updateList(playlist) {
-                    response = await api.updatePlaylistById(playlist._id, playlist);
+                    response = await api.editPlaylist(playlist._id, playlist);
                     if (response.data.success) {
                         async function getListPairs(playlist) {
                             response = await api.getPlaylistPairs();
@@ -209,6 +208,7 @@ export const useGlobalStore = () => {
                                         playlist: playlist
                                     }
                                 });
+                                store.history.push("/");
                             }
                         }
                         getListPairs(playlist);

@@ -97,10 +97,23 @@ deletePlaylist = async (req, res) => {
     })
 }
 
+editPlaylist = async (req,res)=>{
+    console.log("Server edit playlsit reached");
+    const body=req.body;
+    await Playlist.updateOne({ _id: req.params.id }, body, (err, list) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err });
+        }
+
+        return res.status(200).json({ success: true, playlist: list });
+  }).catch((err) => console.log(err));
+}
+
 module.exports = {
     createPlaylist,
     getPlaylists,
     getPlaylistPairs,
     getPlaylistById,
     deletePlaylist,
+    editPlaylist,
 }
