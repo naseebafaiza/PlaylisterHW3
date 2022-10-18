@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, startTransition } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
 export const GlobalStoreContext = createContext({});
@@ -45,7 +45,7 @@ export const useGlobalStore = () => {
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
                     idNamePairs: payload.idNamePairs,
-                    currentList: payload.playlist,
+                    currentList: null,
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     markForDeletion: store.markForDeletion,
@@ -108,7 +108,7 @@ export const useGlobalStore = () => {
                     currentList: payload,
                     newListCounter: store.newListCounter,
                     listNameActive: true,
-                    markForDeletion: store.markForDeletion,
+                    markForDeletion: null,
                 });
             }
             default:
@@ -145,6 +145,54 @@ export const useGlobalStore = () => {
                 console.log("API FAILED TO CREATE A NEW LIST");
             }
         } asyncCreatePlaylist();
+    }
+
+    // add song stuff
+    store.addSong = function(){
+        console.log("ADD SONG FUNCTZION REACHED");
+        let currentList = store.currentList;
+        console.log("CURRENT LISTY LOOKS LIKE : " + currentList);
+        console.log("SIZE OF LIST: " + store.currentList.songs.length);
+        let newSong = {title:"Untitled", artist:"Unknown", youTubeId:"dQw4w9WgXcQ"};
+        currentList.songs.push(newSong); // new song added to curr list
+        async function reloadList(currentList){
+            let response = await api.editPlaylist(currentList._id, currentList);
+            if(response.data.success){
+                storeReducer({type: GlobalStoreActionType.SET_CURRENT_LIST, 
+                    payload: currentList,
+                })
+            }
+
+        } reloadList(currentList);
+    }
+
+    // moving song
+    store.moveSong = function(sourceId,targetId){
+        let currlist = store.currentList;
+        if(sourceId < targetId){
+            let tempList = currlist.songs[sourceId];
+            for (let i = sourceId; i < targetId; i++) {
+                currlist.songs[i] = currlist.songs[i + 1];
+            }
+            currlist.songs[targetId] = tempList;
+        }
+        else if (sourceId>targetId){
+            let tempList = currlist.songs[sourceId];
+            for (let i = sourceId; i > targetId; i--) {
+                currlist.songs[i] = currlist.songs[i - 1];
+            }
+            currlist.songs[targetId] = tempList;
+        }
+        async function reloadList(currlist){
+            console.log("CURRENT LISTA LOOKIN LIKE: " + currlist);
+            let response=await api.editPlaylist(currlist._id,currlist);
+            if(response.data.success){
+                storeReducer({
+                    type:GlobalStoreActionType.SET_CURRENT_LIST,
+                    payload:currlist,
+                })
+            }
+        }reloadList(currlist);
     }
 
     // delete list stuff
@@ -192,7 +240,7 @@ export const useGlobalStore = () => {
         async function asyncChangeListName(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
-                let playlist = response.data.playist;
+                let playlist = response.data.playlist;
                 playlist.name = newName;
                 async function updateList(playlist) {
                     response = await api.editPlaylist(playlist._id, playlist);
@@ -208,7 +256,7 @@ export const useGlobalStore = () => {
                                         playlist: playlist
                                     }
                                 });
-                                store.history.push("/");
+                                // store.history.push("/");
                             }
                         }
                         getListPairs(playlist);

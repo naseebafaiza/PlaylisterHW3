@@ -6,11 +6,45 @@ function SongCard(props) {
 
     const { song, index } = props;
     let cardClass = "list-card unselected-list-card";
+
+    function handleDragStart (event){
+        event.dataTransfer.setData("song", event.target.id);
+    }
+    function handleDragOver (event){
+        event.preventDefault();
+    }
+    function handleDragEnter (event){
+        event.preventDefault();
+    }
+    function handleDragLeave (event){
+        event.preventDefault();
+    }
+    function handleDrop (event){
+        event.preventDefault();
+        let target = event.target;
+        let targetId = target.id;
+        targetId = targetId.substring(target.id.indexOf("-") + 1);
+        let sourceId = event.dataTransfer.getData("song");
+        sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
+
+        targetId=targetId.replace(/\D/g,'')
+        sourceId=sourceId.replace(/\D/g,'')
+
+        sourceId=parseInt(sourceId)
+        targetId=parseInt(targetId)
+        store.moveSong(sourceId,targetId)
+    }
     return (
         <div
             key={index}
             id={'song-' + index + '-card'}
             className={cardClass}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            draggable="true"
         >
             {index + 1}.
             <a

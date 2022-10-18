@@ -98,15 +98,31 @@ deletePlaylist = async (req, res) => {
 }
 
 editPlaylist = async (req,res)=>{
-    console.log("Server edit playlsit reached");
-    const body=req.body;
-    await Playlist.updateOne({ _id: req.params.id }, body, (err, list) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err });
-        }
+    const body = req.body;
+     console.log("updatePlaylist body: " + body);
 
-        return res.status(200).json({ success: true, playlist: list });
-  }).catch((err) => console.log(err));
+     if (!body) {
+         return res.status(400).json({
+             success: false,
+             error: 'Missing body',
+         })
+     }
+     await Playlist.findOne({ _id: req.params.id }, (err, list) => {
+         if (err) {
+             return res.status(400).json({ success: false, error: err })
+         }
+
+         list.name = body.name;
+         list.songs = body.songs;
+         list
+             .save()
+             .then(() => {
+                 return res.status(200).json({success: true, id: list._id})
+             })
+             .catch(error => {
+                 return res.status(404).json({ success: false, error: error })
+             })
+     });
 }
 
 module.exports = {

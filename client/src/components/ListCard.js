@@ -19,7 +19,7 @@ function ListCard(props) {
     // handle delete list here link to modal
     function handleDeleteList(event) {
         event.stopPropagation();
-        store.markListForDeletion(idNamePair)
+        store.markListForDeletion(idNamePair);
         store.showDeleteListModal();
         //store.deleteList(props.idNamePair._id);
     }
@@ -104,7 +104,7 @@ function ListCard(props) {
             <input
                 id={"list-" + idNamePair._id}
                 className='list-card'
-                type='text'
+                type={'text'}
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
                 defaultValue={idNamePair.name}

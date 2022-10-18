@@ -19,6 +19,9 @@ function EditToolbar() {
     function handleRedo() {
         store.redo();
     }
+    function handleAddSong(){
+        store.addSong();
+    }
     function handleClose() {
         history.push("/");
         store.closeCurrentList();
@@ -35,6 +38,7 @@ function EditToolbar() {
                 disabled={editStatus}
                 value="+"
                 className={enabledButtonClass}
+                onClick={handleAddSong}
             />
             <input
                 type="button"
