@@ -20,7 +20,7 @@ function EditToolbar() {
         store.redo();
     }
     function handleAddSong(){
-        store.addSong();
+        store.addAddSongTransaction();
     }
     function handleClose() {
         history.push("/");

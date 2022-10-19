@@ -34,6 +34,10 @@ function SongCard(props) {
         targetId=parseInt(targetId)
         store.moveSong(sourceId,targetId)
     }
+    function handleDeleteSong(event){
+        event.preventDefault();
+        store.markSong(index);
+    }
     return (
         <div
             key={index}
@@ -50,7 +54,7 @@ function SongCard(props) {
             <a
                 id={'song-' + index + '-link'}
                 className="song-link"
-                href={"https://www.youtube.com/watch?v=" + song.youTubeId}>
+                href={"https://www.youtube.com/watch?v=" + song.youTubeId} target="_blank" rel="noreferrer">
                 {song.title} by {song.artist}
             </a>
             <input
@@ -58,6 +62,7 @@ function SongCard(props) {
                 id={"remove-song-" + index}
                 className="list-card-button"
                 value={"\u2715"}
+                onClick = {handleDeleteSong}
             />
         </div>
     );

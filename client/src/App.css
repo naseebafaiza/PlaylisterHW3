@@ -60,6 +60,9 @@ body {
   grid-row: 1 / 2;
   background-color: transparent;
   float:right;
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
 }
 
 #playlist-selector, #playlist-cards {
@@ -107,21 +110,41 @@ body {
 
 #add-list-button {
   float:left;
+  border-color: black;
+  border-style: solid;
+  border-width: 0.5px;
 }
 
 #add-song-button{
   font-size:47.4pt;
   float: left;
+  border-color: black;
+  border-style: solid;
+  border-width: 0.5px;
 }
 
 #close-button{
   font-size:47.4pt;
   float: right;
+  border-color: black;
+  border-style: solid;
+  border-width: 0.5px;
+}
+#undo-button{
+  border-color: black;
+  border-style: solid;
+  border-width: 0.5px;
+}
+#redo-button{
+  border-color: black;
+  border-style: solid;
+  border-width: 0.5px;
 }
 
 #playlist-selector-heading{
   align-items: center;
   font-size: x-large;
+  padding: 5px;
   display: flex;
 }
 

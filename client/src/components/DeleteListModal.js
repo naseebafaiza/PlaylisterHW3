@@ -12,7 +12,7 @@ function DeleteListModal() {
 
     function handleConfirmDeleteList() {
         console.log("DELETE LIST FUNCTION REACHED");
-        store.deleteList();
+        store.deleteList(store.markForDeletion._id);
         store.hideDeleteListModal();
     }
     function handleCancelDeleteList() {
