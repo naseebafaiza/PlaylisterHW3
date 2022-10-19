@@ -38,6 +38,10 @@ function SongCard(props) {
         event.preventDefault();
         store.markSong(index);
     }
+    function handleDoubleClick(event){
+        event.preventDefault();
+        store.markSongForEdit(index);
+    }
     return (
         <div
             key={index}
@@ -48,6 +52,7 @@ function SongCard(props) {
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
+            onDoubleClick = {handleDoubleClick}
             draggable="true"
         >
             {index + 1}.
