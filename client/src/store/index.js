@@ -42,6 +42,8 @@ export const useGlobalStore = () => {
         listNameActive: false,
         markForDeletion: null,
         markedSong: -1,
+        canUndo: false,
+        canRedo: false,
     });
 
     // HERE'S THE DATA STORE'S REDUCER, IT MUST
@@ -57,6 +59,8 @@ export const useGlobalStore = () => {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     markForDeletion: store.markForDeletion,
+                    canUndo: tps.hasTransactionToUndo(),
+                    canRedo: tps.hasTransactionToRedo(),
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -68,6 +72,8 @@ export const useGlobalStore = () => {
                     listNameActive: false,
                     markForDeletion: store.markForDeletion,
                     markedSong: -1,
+                    canUndo: tps.hasTransactionToUndo(),
+                    canRedo: tps.hasTransactionToRedo(),
                 })
             }
             // CREATE A NEW LIST
@@ -79,6 +85,8 @@ export const useGlobalStore = () => {
                     listNameActive: false,
                     markForDeletion: store.markForDeletion,
                     markedSong: -1,
+                    canUndo: tps.hasTransactionToUndo(),
+                    canRedo: tps.hasTransactionToRedo(),
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -90,6 +98,8 @@ export const useGlobalStore = () => {
                     listNameActive: false,
                     markForDeletion: store.markForDeletion,
                     markedSong: -1,
+                    canUndo: tps.hasTransactionToUndo(),
+                    canRedo: tps.hasTransactionToRedo(),
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -101,6 +111,7 @@ export const useGlobalStore = () => {
                     listNameActive: false,
                     markForDeletion: payload,
                     markedSong: -1,
+
                 });
             }
             // Delete a list
@@ -112,6 +123,8 @@ export const useGlobalStore = () => {
                     listNameActive: false,
                     markForDeletion: null,
                     markedSong: -1,
+                    canUndo: tps.hasTransactionToUndo(),
+                    canRedo: tps.hasTransactionToRedo(),
                 });
             }
             // UPDATE A LIST
@@ -123,6 +136,8 @@ export const useGlobalStore = () => {
                     listNameActive: false,
                     markForDeletion: store.markForDeletion,
                     markedSong : -1,
+                    canUndo: tps.hasTransactionToUndo(),
+                    canRedo: tps.hasTransactionToRedo(),
                 });
             }
             // START EDITING A LIST NAME
@@ -446,6 +461,7 @@ export const useGlobalStore = () => {
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}
         });
+        tps.clearAllTransactions();
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
